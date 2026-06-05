@@ -7,12 +7,11 @@ import { CompanySearch } from "./company";
 
 function App() {
   const [search, setSearch] = useState<string>("");
-  const [searchResult, setSearchResult] = useState<CompanySearch[]>();
+  const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    console.log(e);
   };
 
   const onClick = async (e: SyntheticEvent) => {
@@ -23,13 +22,13 @@ function App() {
     } else if (Array.isArray(result.data)) {
       setSearchResult(result.data);
     }
-    console.log(searchResult);
   };
   return (
     <div className="App">
       <Search onClick={onClick} search={search} handleChange={handleChange} />
-      {serverError && <h1>{serverError}</h1>}
-      <CardList />
+      <CardList searchResults={searchResult} />
+      {serverError && <div>Unable to connect to API</div>}
+      {/* {serverError ? <div>Connected</div> : <div>Unable to connect to api</div>} */}
     </div>
   );
 }
