@@ -310,6 +310,11 @@ export interface CompanyKeyMetrics {
   debtToMarketCapTTM: number;
 }
 
+export interface CompanyCompData {
+  symbol: string;
+  peersList: string[];
+}
+
 export interface CompanyHistoricalDividend {
   symbol: string;
   historical: Dividend[];
