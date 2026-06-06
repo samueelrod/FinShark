@@ -246,6 +246,7 @@ export interface CompanyCashFlow {
   finalLink: string;
 }
 
+
 export interface CompanyKeyMetrics {
   revenuePerShareTTM: number;
   netIncomePerShareTTM: number;

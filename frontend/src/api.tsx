@@ -1,31 +1,49 @@
-import axios from "axios"
-import { CompanySearch, CompanyProfile } from "./company"
+import axios from "axios";
+import {
+  CompanyKeyMetrics,
+  CompanyKeyRatios,
+  CompanyProfile,
+  CompanySearch,
+} from "./company";
 
-
-export interface SearchResponse{
-    data: CompanySearch[];
+export interface SearchResponse {
+  data: CompanySearch[];
 }
 
-export const SearchCompanies = async (query: string) => {
+export const searchCompanies = async (query: string) => {
   try {
-    const response = await axios.get(
-      `https://api.twelvedata.com/symbol_search?symbol=${query}&apikey=${process.env.REACT_APP_API_KEY}`
+    const data = await axios.get<SearchResponse>(
+      `https://financialmodelingprep.com/api/v3/search?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.REACT_APP_API_KEY}`
     );
-
-    return response.data.data; // <-- aqui é o array de verdade
+    return data;
   } catch (error) {
-    console.log(error);
+    if (axios.isAxiosError(error)) {
+      console.log("error message: ", error.message);
+      return error.message;
+    } else {
+      console.log("unexpected error: ", error);
+      return "An expected error has occured.";
+    }
   }
 };
 
-
 export const getCompanyProfile = async (query: string) => {
   try {
-    const response = await axios.get(
-      `https://api.twelvedata.com/quote?symbol=${query}&apikey=${process.env.REACT_APP_API_KEY}`
+    const data = await axios.get<CompanyProfile[]>(
+      `https://financialmodelingprep.com/api/v3/profile/${query}?apikey=${process.env.REACT_APP_API_KEY}`
     );
+    return data;
+  } catch (error: any) {
+    console.log("error message: ", error.message);
+  }
+};
 
-    return response.data; 
+export const getKeyMetrics = async (query: string) => {
+  try {
+    const data = await axios.get<CompanyKeyMetrics[]>(
+      `https://financialmodelingprep.com/api/v3/key-metrics-ttm/AAPL?limit=40&apikey=${process.env.REACT_APP_API_KEY}`
+    );
+    return data;
   } catch (error: any) {
     console.log("error message: ", error.message);
   }
